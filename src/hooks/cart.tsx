@@ -70,7 +70,7 @@ const CartProvider: React.FC = ({ children }) => {
         );
       } else {
         setProducts(
-          [...products, product].sort((a, b) => {
+          [...products, newProductData].sort((a, b) => {
             if (a.title > b.title) {
               return 1;
             }
