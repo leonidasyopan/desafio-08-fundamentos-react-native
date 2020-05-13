@@ -34,14 +34,18 @@ const CartProvider: React.FC = ({ children }) => {
     async function loadProducts(): Promise<void> {
       const productsFromStorage = await AsyncStorage.getItem(localStorage);
 
-      setProducts(JSON.parse(productsFromStorage));
+      if (productsFromStorage) {
+        const orderedProducts = [JSON.parse(productsFromStorage)];
+
+        setProducts(orderedProducts);
+      }
     }
 
     loadProducts();
   }, []);
 
   const addToCart = useCallback(async product => {
-    // TODO ADD A NEW ITEM TO THE CART
+    await AsyncStorage.setItem(localStorage, JSON.stringify(product));
   }, []);
 
   const increment = useCallback(async id => {
