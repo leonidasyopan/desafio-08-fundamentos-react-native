@@ -35,7 +35,14 @@ const CartProvider: React.FC = ({ children }) => {
       const productsFromStorage = await AsyncStorage.getItem(localStorage);
 
       if (productsFromStorage) {
-        const orderedProducts = [JSON.parse(productsFromStorage)];
+        const orderedProducts = [...JSON.parse(productsFromStorage)].sort(
+          (a, b) => {
+            if (a.title > b.title) {
+              return 1;
+            }
+            return a.title < b.title ? -1 : 0;
+          },
+        );
 
         setProducts(orderedProducts);
       }
@@ -45,7 +52,34 @@ const CartProvider: React.FC = ({ children }) => {
   }, []);
 
   const addToCart = useCallback(async product => {
-    await AsyncStorage.setItem(localStorage, JSON.stringify(product));
+    const productOnCart = products.find(prod => prod.id === product.id);
+    const newProductQuantity = productOnCart ? product.quantity + 1 : 1;
+    const newProductData = { ...product, quantity: newProductQuantity };
+
+    if (productOnCart) {
+      setProducts(
+        products
+          .map(prod => (prod.id === product.id ? newProductData : prod))
+          .sort((a, b) => {
+            if (a.title > b.title) {
+              return 1;
+            }
+            return a.title < b.title ? -1 : 0;
+          }),
+      );
+    } else {
+      setProducts(
+        [...products, product].sort((a, b) => {
+          if (a.title > b.title) {
+            return 1;
+          }
+          return a.title < b.title ? -1 : 0;
+        }),
+      );
+    }
+
+    setProducts([...products, product]);
+    await AsyncStorage.setItem(localStorage, JSON.stringify(products));
   }, []);
 
   const increment = useCallback(async id => {
