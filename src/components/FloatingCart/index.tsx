@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import { Product } from 'src/pages/Dashboard/styles';
+// import { Product } from 'src/pages/Dashboard/styles';
 import {
   Container,
   CartPricing,
@@ -16,30 +16,25 @@ import formatValue from '../../utils/formatValue';
 
 import { useCart } from '../../hooks/cart';
 
-// Calculo do total
-// Navegação no clique do TouchableHighlight
-
 const FloatingCart: React.FC = () => {
   const { products } = useCart();
 
   const navigation = useNavigation();
 
   const cartTotal = useMemo(() => {
-    const priceTotal = products.reduce((amount, product) => {
-      amount + product.quantity * product.price;
-      console.log(`product.quantity: ${product.quantity}`);
-      console.log(`product.price: ${product.price}`);
-      return amount;
-    }, 0);
+    const priceTotal = products.reduce(
+      (amount, product) => amount + product.quantity * product.price,
+      0,
+    );
 
     return formatValue(priceTotal);
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
-    const quantityTotal = products.reduce((sum, product) => {
-      sum + product.quantity;
-      return sum;
-    }, 0);
+    const quantityTotal = products.reduce(
+      (sum, product) => sum + product.quantity,
+      0,
+    );
     return quantityTotal;
   }, [products]);
 

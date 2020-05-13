@@ -18,7 +18,7 @@ interface Product {
 
 interface CartContext {
   products: Product[];
-  addToCart(item: Product): void;
+  addToCart(item: Omit<Product, 'quantity'>): void;
   increment(id: string): void;
   decrement(id: string): void;
 }
@@ -79,7 +79,6 @@ const CartProvider: React.FC = ({ children }) => {
         );
       }
 
-      setProducts([...products, product]);
       await AsyncStorage.setItem(localStorage, JSON.stringify(products));
     },
     [products],
@@ -101,6 +100,8 @@ const CartProvider: React.FC = ({ children }) => {
             return a.title < b.title ? -1 : 0;
           }),
       );
+
+      await AsyncStorage.setItem(localStorage, JSON.stringify(products));
     },
     [products],
   );
@@ -121,6 +122,8 @@ const CartProvider: React.FC = ({ children }) => {
             return a.title < b.title ? -1 : 0;
           }),
       );
+
+      await AsyncStorage.setItem(localStorage, JSON.stringify(products));
     },
     [products],
   );
