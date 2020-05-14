@@ -47,7 +47,9 @@ const CartProvider: React.FC = ({ children }) => {
   const addToCart = useCallback(
     async product => {
       const productOnCart = products.find(prod => prod.id === product.id);
-      const newProductQuantity = productOnCart ? product.quantity + 1 : 1;
+      const newProductQuantity = productOnCart
+        ? productOnCart?.quantity + 1
+        : 1;
       const newProductData = { ...product, quantity: newProductQuantity };
 
       if (productOnCart) {
