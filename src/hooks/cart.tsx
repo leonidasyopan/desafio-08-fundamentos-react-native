@@ -35,14 +35,7 @@ const CartProvider: React.FC = ({ children }) => {
       const productsFromStorage = await AsyncStorage.getItem(localStorage);
 
       if (productsFromStorage) {
-        const orderedProducts = [...JSON.parse(productsFromStorage)].sort(
-          (a, b) => {
-            if (a.title > b.title) {
-              return 1;
-            }
-            return a.title < b.title ? -1 : 0;
-          },
-        );
+        const orderedProducts = [...JSON.parse(productsFromStorage)];
 
         setProducts(orderedProducts);
       }
@@ -59,24 +52,12 @@ const CartProvider: React.FC = ({ children }) => {
 
       if (productOnCart) {
         setProducts(
-          products
-            .map(prod => (prod.id === product.id ? newProductData : prod))
-            .sort((a, b) => {
-              if (a.title > b.title) {
-                return 1;
-              }
-              return a.title < b.title ? -1 : 0;
-            }),
+          products.map(prod =>
+            prod.id === product.id ? newProductData : prod,
+          ),
         );
       } else {
-        setProducts(
-          [...products, newProductData].sort((a, b) => {
-            if (a.title > b.title) {
-              return 1;
-            }
-            return a.title < b.title ? -1 : 0;
-          }),
-        );
+        setProducts([...products, newProductData]);
       }
 
       await AsyncStorage.setItem(localStorage, JSON.stringify(products));
@@ -87,18 +68,11 @@ const CartProvider: React.FC = ({ children }) => {
   const increment = useCallback(
     async id => {
       setProducts(
-        products
-          .map(product =>
-            product.id === id
-              ? { ...product, quantity: product.quantity + 1 }
-              : product,
-          )
-          .sort((a, b) => {
-            if (a.title > b.title) {
-              return 1;
-            }
-            return a.title < b.title ? -1 : 0;
-          }),
+        products.map(product =>
+          product.id === id
+            ? { ...product, quantity: product.quantity + 1 }
+            : product,
+        ),
       );
 
       await AsyncStorage.setItem(localStorage, JSON.stringify(products));
@@ -115,13 +89,7 @@ const CartProvider: React.FC = ({ children }) => {
               ? { ...product, quantity: product.quantity - 1 }
               : product,
           )
-          .filter(product => product.quantity > 0)
-          .sort((a, b) => {
-            if (a.title > b.title) {
-              return 1;
-            }
-            return a.title < b.title ? -1 : 0;
-          }),
+          .filter(product => product.quantity > 0),
       );
 
       await AsyncStorage.setItem(localStorage, JSON.stringify(products));
