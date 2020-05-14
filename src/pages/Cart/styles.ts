@@ -21,11 +21,7 @@ export const ProductContainer = styled.View`
   flex-direction: row;
 `;
 
-export const ProductList = styled(
-  FlatList as new () => FlatList<Product>,
-).attrs({
-  numColumns: 2,
-})`
+export const ProductList = styled(FlatList as new () => FlatList<Product>)`
   flex: 1;
   padding: 0 10px;
 `;
