@@ -115,6 +115,7 @@ const CartProvider: React.FC = ({ children }) => {
               ? { ...product, quantity: product.quantity - 1 }
               : product,
           )
+          .filter(product => product.quantity > 0)
           .sort((a, b) => {
             if (a.title > b.title) {
               return 1;
